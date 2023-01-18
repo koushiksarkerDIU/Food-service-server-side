@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const app = express();
 const cors = require('cors');
@@ -34,6 +34,22 @@ app.get('/foods', async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        res.send({
+            success: false,
+            error: error.message
+        })
+    }
+});
+
+app.get('/food/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const food = await Food.findOne({ _id: ObjectId(id) })
+        res.send({
+            success: true,
+            data: food
+        })
+    } catch (error) {
         res.send({
             success: false,
             error: error.message
