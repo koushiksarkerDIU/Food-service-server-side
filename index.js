@@ -57,6 +57,29 @@ app.get('/food/:id', async (req, res) => {
     }
 })
 
+app.post("/foods", async (req, res) => {
+    try {
+        const result = await Food.insertOne(req.body);
+        console.log(result);
+        if (result.insertedId) {
+            res.send({
+                success: true,
+                message: "Successfully added the food",
+            });
+        } else {
+            res.send({
+                success: false,
+                error: "Couldn't add the food",
+            });
+        }
+    } catch (error) {
+        console.log(error.name, error.message);
+        res.send({
+            success: false,
+            error: error.message,
+        });
+    }
+});
 
 app.listen(Port, () => {
     console.log("server is running", Port)
