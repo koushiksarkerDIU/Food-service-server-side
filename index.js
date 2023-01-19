@@ -23,6 +23,24 @@ run();
 const Food = client.db('food').collection('foodDetails')
 
 
+app.get('/', async (req, res) => {
+    try {
+        const cursor = Food.find({});
+        const foodsDetails = await cursor.limit(3).toArray();
+        res.send({
+            success: true,
+            message: "all food details",
+            data: foodsDetails
+        })
+    } catch (error) {
+        console.log(error);
+        res.send({
+            success: false,
+            error: error.message
+        })
+    }
+});
+
 app.get('/foods', async (req, res) => {
     try {
         const cursor = Food.find({});
