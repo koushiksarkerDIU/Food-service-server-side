@@ -21,8 +21,9 @@ async function run() {
 run();
 
 const Food = client.db('food').collection('foodDetails')
+const Review = client.db('food').collection('review')
 
-
+// home route food limit route
 app.get('/', async (req, res) => {
     try {
         const cursor = Food.find({});
@@ -41,6 +42,7 @@ app.get('/', async (req, res) => {
     }
 });
 
+// all food card route
 app.get('/foods', async (req, res) => {
     try {
         const cursor = Food.find({});
@@ -59,6 +61,7 @@ app.get('/foods', async (req, res) => {
     }
 });
 
+// specific food id details route
 app.get('/food/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -75,6 +78,32 @@ app.get('/food/:id', async (req, res) => {
     }
 })
 
+// add the review
+app.post('/addReview', async (req, res) => {
+    try {
+        const result = await Review.insertOne(req.body);
+        console.log(result);
+        if (result.insertedId) {
+            res.send({
+                success: true,
+                message: "Successfully added the review",
+            });
+        } else {
+            res.send({
+                success: false,
+                error: "Couldn't add the review",
+            });
+        }
+    } catch (error) {
+        console.log(error.name, error.message);
+        res.send({
+            success: false,
+            error: error.message,
+        });
+    }
+});
+
+// add new food route
 app.post("/foods", async (req, res) => {
     try {
         const result = await Food.insertOne(req.body);
