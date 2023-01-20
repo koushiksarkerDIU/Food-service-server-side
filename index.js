@@ -103,6 +103,26 @@ app.post('/addReview', async (req, res) => {
     }
 });
 
+app.get('/addReview', async (req, res) => {
+    try {
+        const id = req.query.id
+        const query = { foodId: id }
+        const cursor = Review.find(query)
+        const allReviews = await cursor.toArray()
+        res.send({
+            success: true,
+            message: "all reviews",
+            data: allReviews
+        })
+    } catch (error) {
+        console.log(error);
+        res.send({
+            success: false,
+            error: error.message
+        })
+    }
+});
+
 // add new food route
 app.post("/foods", async (req, res) => {
     try {
