@@ -103,10 +103,31 @@ app.post('/addReview', async (req, res) => {
     }
 });
 
+// specific food all reviews
 app.get('/addReview', async (req, res) => {
     try {
         const id = req.query.id
         const query = { foodId: id }
+        const cursor = Review.find(query)
+        const allReviews = await cursor.toArray()
+        res.send({
+            success: true,
+            message: "all reviews",
+            data: allReviews
+        })
+    } catch (error) {
+        console.log(error);
+        res.send({
+            success: false,
+            error: error.message
+        })
+    }
+});
+
+app.get('/myReviews', async (req, res) => {
+    try {
+        const email = req.query.email
+        const query = { email: email }
         const cursor = Review.find(query)
         const allReviews = await cursor.toArray()
         res.send({
